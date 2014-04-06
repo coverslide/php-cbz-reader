@@ -1,0 +1,9 @@
+{
+    "require": {
+        "silex/silex": "~1.2",
+        "twig/twig": "~1.15"
+    },
+    "autoload": {
+        "psr-0": {"Coverslide" : "src/"}
+    }
+}

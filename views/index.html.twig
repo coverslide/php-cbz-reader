@@ -1,0 +1,36 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div id="cbz-reader-container">
+    <div id="cbz-reader-toolbar" class="navbar navbar-default" role="navigation">
+        <div class="">
+            <div class="toolbar-left navbar-left">
+                <a class="btn btn-lg btn-primary" data-action="toggle-browser">Files</a>
+                <a class="btn btn-lg btn-primary" data-action="toggle-pages">Pages</a>
+            </div>
+            <div class="toolbar-right navbar-right">
+                <a class="btn btn-lg btn-primary" data-action="fullscreen">Full</a>
+            </div>
+            <div class="toolbar-center">
+                <a class="btn btn-lg btn-primary fa fa-arrow-left" data-action="previous-page" disabled></a>
+                <a class="btn btn-lg btn-primary fa fa-arrow-right" data-action="next-page" disabled></a>
+            </div>
+        </div>
+    </div>
+    <div id="cbz-reader-body">
+        <div id="cbz-reader-browser">
+            <div data-url="/" class="browser-root">
+                <ol class="directory-children"></ol>
+            </div>
+        </div>
+        <div id="cbz-reader-viewer"></div>
+        <div id="cbz-reader-pages">
+            <div>
+                <div class="current-file-title">No File</div>
+                <ol class="current-file-list">
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

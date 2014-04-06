@@ -1,0 +1,32 @@
+#cbz-reader-browser {top:0%;left:0;width:100%;height: 0%;
+  -webkit-transition:top .5s, height .5s;
+  -moz-transition:top .5s, height .5s;
+}
+#cbz-reader-pages {top: 0%;left:0;width:100%;height: 0%;
+  -webkit-transition: top .5s, height .5s;
+  -moz-transition: top .5s, height .5s;
+}
+#cbz-reader-viewer {top: 0%;left:0;width:100%;height: 100%;
+  -webkit-transition: top .5s, height .5s;
+  -moz-transition: top .5s, height .5s;
+}
+
+/* override base style changes */
+.browser #cbz-reader-browser,
+.browser #cbz-reader-viewer,
+.browser #cbz-reader-pages,
+.pages #cbz-reader-browser,
+.pages #cbz-reader-viewer,
+.pages #cbz-reader-pages,
+.browser.pages #cbz-reader-browser,
+.browser.pages #cbz-reader-pages,
+.browser.pages #cbz-reader-viewer {width:100%;left:0%;top:0%;}
+
+.browser #cbz-reader-browser {height:30%}
+.browser #cbz-reader-pages {top:30%;height:0%}
+.browser #cbz-reader-viewer {top:30%;height:70%}
+.pages #cbz-reader-pages {height:30%;top:0%}
+.pages #cbz-reader-viewer {top:30%;height:70%}
+.browser.pages #cbz-reader-pages {top:30%}
+.browser.pages #cbz-reader-viewer {top:60%;height:40%}
+
