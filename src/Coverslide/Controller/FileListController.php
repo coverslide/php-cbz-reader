@@ -35,7 +35,26 @@ class FileListController
             );
         }
 
-        $files = (new FileLister($path))->listFiles();
+        $files = array_filter(
+            (new FileLister($path))->listFiles(),
+            function ($fileInfo) {
+                if ($fileInfo['directory']) {
+                    return true;
+                } else if (preg_match('/\.cbz$/i', $fileInfo['filename'])) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        usort($files, function($a, $b) {
+            if ($a['directory'] && !$b['directory']) {
+                return -1;
+            } else if ($b['directory'] && !$a['directory']) {
+                return 1;
+            }
+            return strnatcasecmp($a['filename'], $b['filename']);
+        });
 
 
         return new JsonResponse(

@@ -6,28 +6,27 @@
             this.$root = $(selector);
             this.initializeTemplates();
         },
-        setAjaxUrl: function (url)
+        setDao: function (dao)
         {
-            this.url = url;
+            this.dao = dao;
         },
         start: function ()
         {
-            this.getFiles('/', this.$root.children('.browser-root').children('.directory-children').eq(0));
+            this.getFiles('', this.$root.children('.browser-root'));
         },
         getFiles: function (path, $element)
         {
+            var $directoryChildren = $element.children('.directory-children');
+            $directoryChildren.empty();
+            $element.addClass('active');
             var self = this;
-            $.ajax({
-                url: this.url,
-                data: {directory: path},
-                success: function (returnValue) {
-                    if (returnValue.status === 0) {
-                        returnValue.data.forEach(function (fileData) {
-                            $element.append(self.browserRowTemplate(fileData));
-                        });
-                    }
-                }
-            })
+            this.dao.getFileList(path, function (err, directory, files) {
+                if (err) return;
+                files.forEach(function (fileData) {
+                    fileData.path = [directory, fileData.filename].join('/');
+                    $directoryChildren.append(self.browserRowTemplate(fileData));
+                });
+            });
         },
         initializeTemplates: function () {
             this.browserRowTemplate = doT.compile($('#cbz-reader-template-browser-row').html());

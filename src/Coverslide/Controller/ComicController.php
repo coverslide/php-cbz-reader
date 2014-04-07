@@ -9,6 +9,9 @@ use Coverslide\ZipReader;
 
 class ComicController
 {
+    const STATUS_OK = 0;
+    const STATUS_ERROR = 1;
+    
     protected $rootPath;
 
     protected $decompress = false;
@@ -32,11 +35,43 @@ class ComicController
 
         $filepath = join('/', array($this->rootPath, $filename));
 
-        $zipReader = new ZipReader($filepath);
-        
-        $files = $zipReader->listFiles();
+        if (!is_file($filepath)) {
+            return new JsonResponse(
+                array(
+                    'status' => self::STATUS_ERROR
+                ),
+                404
+            );
+        }
 
-        return new JsonResponse($files);
+        try {
+            $zipReader = new ZipReader($filepath);
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                array(
+                    'status' => self::STATUS_ERROR
+                ),
+                500
+            );
+        }
+        
+        $files = array_filter(
+            $zipReader->listFiles(),
+            function ($fileData) {
+                return preg_match('/\.(png|jp[e]?g|gif|bmp)/i', $fileData['filename']);
+            }
+        );
+
+        usort($files, function($a, $b) {
+            return strnatcasecmp($a['filename'], $b['filename']);
+        });
+
+        return new JsonResponse(
+            array(
+                'status' => self::STATUS_OK,
+                'data'   => $files
+            )
+        );
     }
 
     public function imageAction(Request $request)
@@ -46,8 +81,12 @@ class ComicController
 
         $filepath = join('/', array($this->rootPath, $filename));
 
-        $zipReader = new ZipReader($filepath);
-        $fileInfo = $zipReader->getFileInfoAtOffset($offset);
+        try {
+            $zipReader = new ZipReader($filepath);
+            $fileInfo = $zipReader->getFileInfoAtOffset($offset);
+        } catch (\Exception $e) {
+            return new Response('', 500);
+        }
 
         $responseHeaders = array(
             'Content-Type' => $this->inferContentType($fileInfo['filename'])
@@ -62,7 +101,11 @@ class ComicController
                 $responseHeaders['Content-Encoding'] = 'gzip';
                 $responseData = $zipReader->createGzipDataFromFileInfo($fileInfo); 
             } else {
-                $responseData = $zipReader->decompressDataFromFileInfo($fileInfo);
+                try {
+                    $responseData = $zipReader->decompressDataFromFileInfo($fileInfo);
+                } catch (\Exception $e) {
+                    return new Response('', 500);
+                }
             }
         } else {
             return new Response('Unrecognized Compression Type', 500);
@@ -81,6 +124,8 @@ class ComicController
             return 'image/gif';
         } else if (preg_match('/.(bmp|dib)$/i', $filename)) {
             return 'image/bmp';
+        } else {
+            return 'application/octet-stream';
         }
     }
 }

@@ -27,7 +27,7 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
     </div>
     <div id="cbz-reader-body">
         <div id="cbz-reader-browser">
-            <div data-url="/" class="browser-root">
+            <div class="browser-root">
                 <ol class="nav directory-children"></ol>
             </div>
         </div>
@@ -35,21 +35,23 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
         <div id="cbz-reader-pages">
             <div>
                 <div class="current-file-title">No File</div>
-                <ol class="current-file-list">
-                </ol>
+                <ul class="nav current-file-list">
+                </ul>
             </div>
         </div>
     </div>
 </div>
 <script id="cbz-reader-template-browser-row" type="application/x-template-dot">
 {%- verbatim -%}
-<li class="browser-item large">
-    <a href="javascript:">
+<li class="browser-item" data-path="{{= it.path }}">
+    <a href="#!{{= it.path }}{{= it.directory ? '' : '::1' }}">
         <span class="browser-icon fa fa-{{= it.directory ? 'folder folder' : 'file file' }}"></span>
         <span class="file-name">{{= it.filename }}</span>
     </a>
+    {{? it.directory }}
     <ol class="nav directory-children">
     </ol>
+    {{?}}
 </li>
 {%- endverbatim -%}
 </script>
@@ -59,6 +61,8 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 <script src="/vendor/klass.js"></script>
 <script src="/vendor/doT.js"></script>
 <script src="/vendor/eventemitter2.js"></script>
+<script src="/js/Coverslide/dao/cbzreader/CbzReaderDao.js"></script>
+<script src="/js/Coverslide/page/cbzreader/CbzReaderPage.js"></script>
 <script src="/js/Coverslide/widget/cbzreader/ToolbarWidget.js"></script>
 <script src="/js/Coverslide/widget/cbzreader/BrowserWidget.js"></script>
 <script src="/js/Coverslide/widget/cbzreader/PagesWidget.js"></script>
