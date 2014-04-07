@@ -1,6 +1,5 @@
 ;(function () {
     'use strict';
-
     function addNamespace () {
         return function currentNamespace(property) {
             if (typeof currentNamespace[property] == 'undefined') {
@@ -9,6 +8,5 @@
             return currentNamespace[property];
         }
     }
-
     window.Coverslide = addNamespace();
 }());

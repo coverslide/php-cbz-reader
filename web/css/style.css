@@ -8,7 +8,7 @@ user-select: none;}
 
 #cbz-reader-container{background:black;height:100%}
 #cbz-reader-toolbar {background:#EEE;height: 60px;width:100%;position:absolute;top:0;padding:0;z-index:5;box-shadow:0 0 5px #444;line-height: 60px;vertical-align: middle;padding: 0 10px;box-sizing: border-box;-moz-box-sizing: border-box; -webkit-box-sizing: border-box;}
-#cbz-reader-body {background:black;border-top: 30px solid transparent;height:100%;position:relative;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
+#cbz-reader-body {background:black;border-top: 60px solid transparent;height:100%;position:relative;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
 #cbz-reader-browser {background:white;position:absolute;top:0;left:0%;width:0%;height:100%;z-index:4;box-shadow:0 0 5px #444;
     -webkit-transition:width .5s, left .5s;
     -moz-transition:width .5s, left .5s;
@@ -32,12 +32,18 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 .pages #cbz-reader-pages {width:30%;}
 
 #cbz-reader-browser {overflow:auto}
+#cbz-reader-browser .browser-item {font-size: 120%}
+#cbz-reader-browser .browser-item .browser-icon {width: 20px;}
+#cbz-reader-browser .browser-item .folder {color: orange;}
+#cbz-reader-browser .browser-item .file { color: light-gray;}
+/*
 .browser-item {position:relative;white-space:nowrap;}
 .browser-item-name, .browser-item-stat {cursor: pointer;padding-left: 20px;white-space:nowrap;}
 .browser-item-name.selected {background:#aaf}
 .browser-item-icon {cursor: pointer;position:absolute;top:0;left:0}
 .browser-directory .browser-item-icon {background: url(/directory-20x20.png);width:20px;height:20px;}
 .browser-file .browser-item-icon {background: url(/file-20x20.png);width:20px;height:20px;}
+*/
 
 .browser-root > .directory-children {padding:0}
 .directory-children {list-style:none;padding:0;margin:0;padding-left: 15px;}

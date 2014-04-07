@@ -12,10 +12,12 @@
         <link rel="stylesheet" media="all" href="/css/style.css" />
         <link rel="stylesheet" media="screen and (max-width:480px)" href="/css/mobile.css" />
         <script src="/js/Coverslide.js"></script>
+        {{ block("head") }}
     </head>
     <body>
         {{ block("content") }}
         <script src="/vendor/jquery-1.11.0.min.js"></script>
         <script src="/vendor/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+        {{ block("bottom") }}
     </body>
 </html>

@@ -1,5 +1,13 @@
 {% extends "layout.html.twig" %}
 
+{% block head %}
+<script type="text/javascript">
+Coverslide('urls')('cbzreader').fileListUrl = '/file-list';
+Coverslide('urls')('cbzreader').comicPagesUrl = '/comic/list';
+Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
+</script>
+{% endblock %}
+
 {% block content %}
 <div id="cbz-reader-container">
     <div id="cbz-reader-toolbar" class="navbar navbar-default" role="navigation">
@@ -20,7 +28,7 @@
     <div id="cbz-reader-body">
         <div id="cbz-reader-browser">
             <div data-url="/" class="browser-root">
-                <ol class="directory-children"></ol>
+                <ol class="nav directory-children"></ol>
             </div>
         </div>
         <div id="cbz-reader-viewer"></div>
@@ -33,4 +41,30 @@
         </div>
     </div>
 </div>
+<script id="cbz-reader-template-browser-row" type="application/x-template-dot">
+{%- verbatim -%}
+<li class="browser-item large">
+    <a href="javascript:">
+        <span class="browser-icon fa fa-{{= it.directory ? 'folder folder' : 'file file' }}"></span>
+        <span class="file-name">{{= it.filename }}</span>
+    </a>
+    <ol class="nav directory-children">
+    </ol>
+</li>
+{%- endverbatim -%}
+</script>
+{% endblock %}
+
+{% block bottom %}
+<script src="/vendor/klass.js"></script>
+<script src="/vendor/doT.js"></script>
+<script src="/vendor/eventemitter2.js"></script>
+<script src="/js/Coverslide/widget/cbzreader/ToolbarWidget.js"></script>
+<script src="/js/Coverslide/widget/cbzreader/BrowserWidget.js"></script>
+<script src="/js/Coverslide/widget/cbzreader/PagesWidget.js"></script>
+<script src="/js/Coverslide/widget/cbzreader/ViewerWidget.js"></script>
+<script src="/js/Coverslide/page/cbzreader/CbzReaderPage.js"></script>
+<script type="text/javascript">
+    Coverslide.page.current = new Coverslide.page.cbzreader.CbzReaderPage();
+</script>
 {% endblock %}
