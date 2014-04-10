@@ -55,6 +55,12 @@
                 } else {
                     this.setMode(MODE_PAGES)
                 }
+            } else if (action == 'next-page') {
+
+            } else if (action == 'previous-page') {
+
+            } else if (action == 'fullscreen') {
+                
             }
         },
         onHashChange: function ()

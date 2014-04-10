@@ -4,13 +4,14 @@
         initialize: function (selector)
         {
             this.$root = $(selector);
+            this.$image = this.$root.find('.image');
         },
         setImageUrl: function (url)
         {
             this.url = url;
         },
         loadPage: function (file, offset) {
-            this.$root.empty().append('<img src="' + this.url + '?file=' + encodeURIComponent(file) + '&offset=' + offset +'" />')
+            this.$image.attr('src', this.url + '?file=' + encodeURIComponent(file) + '&offset=' + offset);
         }
     });
 }(jQuery));
