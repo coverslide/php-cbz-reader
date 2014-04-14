@@ -32,6 +32,7 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 .pages #cbz-reader-pages {width:50%;}
 
 #cbz-reader-browser {overflow:auto}
+#cbz-reader-browser .nav li.active > a {background: #ccccff;}
 #cbz-reader-browser .browser-item {font-size: 120%}
 #cbz-reader-browser .browser-item .browser-icon {width: 20px;}
 #cbz-reader-browser .browser-item .folder {color: orange;}
@@ -49,6 +50,7 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 .directory-children {list-style:none;padding:0;margin:0;padding-left: 15px;}
 .directory-children li {list-style:none;padding:0;margin:0;line-height: 18px;}
 
+#cbz-reader-pages .active a {background: #ccccff;}
 #cbz-reader-pages .current-file-title {font-weight:bold;color:#666;text-transform:uppercase}
 #cbz-reader-pages .current-file-contents {padding: 10px}
 #cbz-reader-pages .current-file-list li {position:relative;cursor:pointer;padding-right:24px;white-space:nowrap}
@@ -58,6 +60,11 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 .toolbar-right {float:right}
 .toolbar-center {text-align:center}
 
-#cbz-reader-viewer .image {display:block;width:100%}
+#cbz-reader-viewer .image {
+    display:block;
+    width:100%;
+    -webkit-transition:width .5s;
+    -moz-transition:width .5s;
+}
 #cbz-reader-viewer .image.zoom {width:200%}
 #cbz-reader-viewer .viewer-text {background:white}

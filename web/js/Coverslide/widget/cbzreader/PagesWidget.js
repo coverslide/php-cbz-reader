@@ -1,6 +1,10 @@
 ;(function($){
     'use strict';
     Coverslide('widget')('cbzreader').PagesWidget = klass(EventEmitter2).extend({
+        currentFile: null,
+        currentPage: null,
+        lastPage: null,
+        $currentElement: null,
         initialize: function (selector)
         {
             this.currentFile = null;
@@ -32,15 +36,23 @@
         updatePages: function (path, pages)
         {
             var self = this;
+            this.lastPage = pages.length;
             this.$currentFileList.empty();
+            this.$currentFileList.scrollTop(0);
             pages.forEach(function (page, index) {
-                self.$currentFileList.append('<li data-offset="' + page.fileOffset + '"><a href="#!' + path + '::' + (index + 1) +'">' + (index + 1) + page.filename + '</a></li>')
+                self.$currentFileList.append('<li data-offset="' + page.fileOffset + '"><a href="#!' + path + '::' + (index + 1) +'"><span class="badge">' + (index + 1) + '</span><span class="page-filename">' + page.filename + '</span></a></li>')
             });
         },
         selectPage: function (page)
         {
-           var offset = this.$currentFileList.find('li').eq(page - 1).attr('data-offset');
-           this.emit('page', this.currentFile, offset);
+            if (this.$currentElement) {
+                this.$currentElement.removeClass('active');
+            }
+            var $pageElement = this.$currentFileList.find('li').eq(page - 1);
+            $pageElement.addClass('active');
+            var offset = $pageElement.attr('data-offset');
+            this.$currentElement = $pageElement;
+            this.emit('page', this.currentFile, offset);
         }
     });
 }(jQuery));
