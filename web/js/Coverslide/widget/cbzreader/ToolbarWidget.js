@@ -13,7 +13,10 @@
             var self = this;
             this.$root.on('click', 'a', function (e) {
                 var action = $(this).attr('data-action');
-                self.emit('click', action);
+                if (action) {
+                    console.log(action)
+                    self.emit('click', action);
+                }
             });
         },
         toggleNext: function(state)

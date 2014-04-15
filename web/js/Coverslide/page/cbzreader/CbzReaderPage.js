@@ -36,13 +36,20 @@
 
             this.toolbar.on('click', this.onToolbarClick.bind(this));
             this.pages.on('page', this.onPage.bind(this));
+            this.pages.on('update', this.onPageUpdate.bind(this));
         },
         onPage: function (path, offset)
         {
             this.viewer.loadPage(path, offset);
         },
+        onPageUpdate: function(pages, page)
+        {
+            this.toolbar.togglePrevious(page != 1);
+            this.toolbar.toggleNext(page <= pages - 1);
+        },
         onToolbarClick: function (action)
         {
+        console.log(action)
             if (action == 'toggle-browser') {
                 if (this.mode == MODE_BROWSER) {
                     this.setMode(MODE_NONE)
@@ -71,7 +78,9 @@
             var hash = window.location.hash;
             var fileMatch = /^#\!(.+)::(.+)$/.exec(hash);
             if (fileMatch) {
-                this.setMode(MODE_PAGES);
+                if (this.mode == MODE_BROWSER) { 
+                    this.setMode(MODE_PAGES);
+                }
                 this.pages.loadPage(fileMatch[1], fileMatch[2]);
             } else {
                 this.setMode(MODE_BROWSER);

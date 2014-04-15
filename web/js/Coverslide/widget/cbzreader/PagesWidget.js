@@ -2,7 +2,7 @@
     'use strict';
     Coverslide('widget')('cbzreader').PagesWidget = klass(EventEmitter2).extend({
         currentFile: null,
-        currentPage: null,
+        page: null,
         lastPage: null,
         $currentElement: null,
         initialize: function (selector)
@@ -28,9 +28,11 @@
                     self.setCurrentFile(filename);
                     self.updatePages(path, pages);
                     self.selectPage(page);
+                    self.emit('update', self.lastPage, page);
                 });
             } else {
-                self.selectPage(page);
+                this.selectPage(page);
+                this.emit('update', this.lastPage, page);
             }
         },
         updatePages: function (path, pages)
@@ -48,12 +50,24 @@
             if (this.$currentElement) {
                 this.$currentElement.removeClass('active');
             }
+            this.page = +page;
             var $pageElement = this.$currentFileList.find('li').eq(page - 1);
             $pageElement.addClass('active');
             var offset = $pageElement.attr('data-offset');
             this.$currentElement = $pageElement;
             this.emit('page', this.currentFile, offset);
+        },
+        nextPage: function()
+        {
+            if (this.currentFile && this.page <= this.lastPage - 1) {
+                window.location.hash = '#!' + this.currentFile + '::' + (this.page + 1);
+            }
+        },
+        previousPage: function()
+        {
+            if (this.currentFile && this.page > 1) {
+                window.location.hash = '#!' + this.currentFile + '::' + (this.page - 1);
+            }
         }
     });
 }(jQuery));
-
