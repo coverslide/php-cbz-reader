@@ -1,12 +1,12 @@
 ;(function($){
     'use strict';
     Coverslide('widget')('cbzreader').BrowserWidget = klass(EventEmitter2).extend({
-        currentFile: null,
         $currentElement: null,
         initialize: function (selector)
         {
             this.$root = $(selector);
             this.initializeTemplates();
+            this.bindEvents();
         },
         setDao: function (dao)
         {
@@ -16,33 +16,42 @@
         {
             this.getFiles('', this.$root.children('.browser-root'));
         },
+        bindEvents: function ()
+        {
+            var self = this;
+            this.$root.on('click', 'a', function (evt) {
+                var $this = $(this);
+                var $element = $this.parent();
+                if ($element.attr('data-expanded')) {
+                    $element.removeAttr('data-expanded');
+                    var $directoryChildren = $element.children('.directory-children');
+                    $directoryChildren.slideUp();
+                    evt.stopPropagation();
+                    window.location.hash = '#';
+                    return false;
+                }
+            });
+        },
         getFiles: function (path, $element)
         {
             var self = this;
-            if (path == this.currentFile) {
-                this.currentFile = null;
-
-                var $directoryChildren = $element.children('.directory-children');
-                $directoryChildren.slideUp();
-            } else {
-                if (this.$currentElement) {
-                    this.$currentElement.removeClass('active');
-                }
-                this.$currentElement = $element;
-                var $directoryChildren = $element.children('.directory-children');
-                $directoryChildren.empty();
-                $element.addClass('active');
-                this.currentFile = path;
-                $directoryChildren.hide();
-                this.dao.getFileList(path, function (err, directory, files) {
-                    if (err) return;
-                    files.forEach(function (fileData) {
-                        fileData.path = [directory, fileData.filename].join('/');
-                        $directoryChildren.append(self.browserRowTemplate(fileData));
-                    });
-                    $directoryChildren.slideDown();
-                });
+            if (this.$currentElement) {
+                this.$currentElement.removeClass('active');
             }
+            this.$currentElement = $element;
+            var $directoryChildren = $element.children('.directory-children');
+            $directoryChildren.empty();
+            $element.addClass('active');
+            $directoryChildren.hide();
+            this.dao.getFileList(path, function (err, directory, files) {
+                if (err) return;
+                files.forEach(function (fileData) {
+                    fileData.path = [directory, fileData.filename].join('/');
+                    $directoryChildren.append(self.browserRowTemplate(fileData));
+                    $element.attr('data-expanded', true);
+                });
+                $directoryChildren.slideDown();
+            });
         },
         initializeTemplates: function () {
             this.browserRowTemplate = doT.compile($('#cbz-reader-template-browser-row').html());
