@@ -7,6 +7,7 @@
         initialize: function ()
         {
             this.mode = MODE_NONE;
+
             this.$body = $(document.body);
             this.toolbar = new Coverslide.widget.cbzreader.ToolbarWidget('#cbz-reader-toolbar');
             this.browser = new Coverslide.widget.cbzreader.BrowserWidget('#cbz-reader-browser');
@@ -49,7 +50,6 @@
         },
         onToolbarClick: function (action)
         {
-        console.log(action)
             if (action == 'toggle-browser') {
                 if (this.mode == MODE_BROWSER) {
                     this.setMode(MODE_NONE)
@@ -72,6 +72,11 @@
         },
         toggleFullscreen: function ()
         {
+            if (document.fullscreenEnabled) {
+                document.exitFullscreen();
+            } else {
+                document.body.requestFullscreen();
+            }
         },
         onHashChange: function ()
         {

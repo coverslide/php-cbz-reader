@@ -1,4 +1,4 @@
-html,body{height:100%;margin:0;padding:0;font-size:13px;font-family:sans-serif;
+html,body{height:100%;width:100%;margin:0;padding:0;font-size:13px;font-family:sans-serif;
 -webkit-touch-callout: none;
 -webkit-user-select: none;
 -khtml-user-select: none;
@@ -33,7 +33,6 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 
 #cbz-reader-browser {overflow:auto}
 #cbz-reader-browser .nav li.active > a {background: #ccccff;}
-#cbz-reader-browser .browser-item {font-size: 120%}
 #cbz-reader-browser .browser-item .browser-icon {width: 20px;}
 #cbz-reader-browser .browser-item .folder {color: orange;}
 #cbz-reader-browser .browser-item .file { color: light-gray;}

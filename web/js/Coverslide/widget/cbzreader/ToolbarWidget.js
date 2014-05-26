@@ -4,9 +4,19 @@
         initialize: function (selector)
         {
             this.$root = $(selector);
-            this.$previousBtn = this.$root.find('[data-action="previous-page"]')
-            this.$nextBtn = this.$root.find('[data-action="next-page"]')
+            this.$previousBtn = this.$root.find('[data-action="previous-page"]');
+            this.$nextBtn = this.$root.find('[data-action="next-page"]');
+            this.$fullscreenBtn = this.$root.find('[data-action="fullscreen"]');
+            this.fullscreen = false;
+
             this.bindEvents();
+            this.toggleFullscreenBtn();
+        },
+        toggleFullscreenBtn: function ()
+        {
+            if (document.body.requestFullscreen) {
+                this.$fullscreenBtn.removeClass('hidden');
+            }
         },
         bindEvents: function ()
         {
@@ -14,10 +24,10 @@
             this.$root.on('click', 'a', function (e) {
                 var action = $(this).attr('data-action');
                 if (action) {
-                    console.log(action)
                     self.emit('click', action);
                 }
             });
+
         },
         toggleNext: function(state)
         {

@@ -13,15 +13,15 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
     <div id="cbz-reader-toolbar" class="navbar navbar-default" role="navigation">
         <div class="">
             <div class="toolbar-left navbar-left">
-                <a class="btn btn-lg btn-primary" data-action="toggle-browser">Files</a>
-                <a class="btn btn-lg btn-primary" data-action="toggle-pages">Pages</a>
+                <a class="btn btn-md btn-primary" data-action="toggle-browser">Files</a>
+                <a class="btn btn-md btn-primary" data-action="toggle-pages">Pages</a>
             </div>
             <div class="toolbar-right navbar-right">
-                <a class="btn btn-lg btn-primary" data-action="fullscreen">Full</a>
+                <a class="btn btn-md btn-default hidden" data-action="fullscreen">Full</a>
             </div>
             <div class="toolbar-center">
-                <a class="btn btn-lg btn-primary fa fa-arrow-left" data-action="previous-page" disabled></a>
-                <a class="btn btn-lg btn-primary fa fa-arrow-right" data-action="next-page" disabled></a>
+                <a class="btn btn-md btn-primary fa fa-arrow-left" data-action="previous-page" disabled></a>
+                <a class="btn btn-md btn-primary fa fa-arrow-right" data-action="next-page" disabled></a>
             </div>
         </div>
     </div>
@@ -63,6 +63,7 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 <script src="/vendor/klass.js"></script>
 <script src="/vendor/doT.js"></script>
 <script src="/vendor/eventemitter2.js"></script>
+<script src="/vendor/fullscreen-api-polyfill.js"></script>
 <script src="/js/Coverslide/dao/cbzreader/CbzReaderDao.js"></script>
 <script src="/js/Coverslide/page/cbzreader/CbzReaderPage.js"></script>
 <script src="/js/Coverslide/widget/cbzreader/ToolbarWidget.js"></script>
