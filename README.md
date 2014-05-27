@@ -21,3 +21,6 @@ This only works on .cbz files, for various reasons. You will need to convert any
 
 In order to convert files, look at the converter scripts for [.cbr files](https://github.com/coverslide/cbz-web/blob/master/bin/cbrtocbz) and [.pdf files](https://github.com/coverslide/cbz-web/blob/master/bin/pdftocbz).
 
+### LICENSE ###
+
+MIT
