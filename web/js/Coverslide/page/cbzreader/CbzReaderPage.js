@@ -95,9 +95,12 @@
         },
         start: function()
         {
+            var self = this;
             this.setMode(MODE_BROWSER);
             this.browser.start();
-            this.onHashChange();
+            this.browser.once('start', function () {
+                self.onHashChange();
+            });
         },
         setMode: function(mode)
         {

@@ -1,10 +1,11 @@
 ;(function($){
     'use strict';
     Coverslide('widget')('cbzreader').BrowserWidget = klass(EventEmitter2).extend({
-        $currentElement: null,
         initialize: function (selector)
         {
             this.$root = $(selector);
+            this.initialized = false;
+            this.$currentElement = null;
             this.initializeTemplates();
             this.bindEvents();
         },
@@ -50,6 +51,9 @@
                     $directoryChildren.append(self.browserRowTemplate(fileData));
                     $element.attr('data-expanded', true);
                 });
+                if (!self.initialized) {
+                    self.emit('start');
+                }
                 $directoryChildren.slideDown();
             });
         },
