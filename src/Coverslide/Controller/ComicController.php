@@ -4,6 +4,7 @@ namespace Coverslide\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Coverslide\ZipReader;
 
@@ -81,6 +82,11 @@ class ComicController
 
         $filepath = join('/', array($this->rootPath, $filename));
 
+        $etag = md5(stat($filepath)['mtime']);
+        if ($request->headers->get('If-None-Match') === $etag) {
+            return new Response('', 304);
+        }
+
         try {
             $zipReader = new ZipReader($filepath);
             $fileInfo = $zipReader->getFileInfoAtOffset($offset);
@@ -89,7 +95,8 @@ class ComicController
         }
 
         $responseHeaders = array(
-            'Content-Type' => $this->inferContentType($fileInfo['filename'])
+            'Content-Type' => $this->inferContentType($fileInfo['filename']),
+            'ETag'  => $etag
         );
 
         $acceptedEncodings = explode(',', $request->headers->get('accept-encoding'));
@@ -99,13 +106,21 @@ class ComicController
         } else if ($fileInfo['compressionType'] === ZipReader::COMPRESSION_DEFLATE) {
             if (in_array('gzip', $acceptedEncodings)) {
                 $responseHeaders['Content-Encoding'] = 'gzip';
-                $responseData = $zipReader->createGzipDataFromFileInfo($fileInfo); 
+                return new StreamedResponse(
+                    function () use ($zipReader, $fileInfo) {
+                        echo $zipReader->createGzipDataFromFileInfo($fileInfo);
+                    },
+                    200,
+                    $responseHeaders
+                );
             } else {
-                try {
-                    $responseData = $zipReader->decompressDataFromFileInfo($fileInfo);
-                } catch (\Exception $e) {
-                    return new Response('', 500);
-                }
+                return new StreamedResponse(
+                    function () use ($zipReader, $fileInfo) {
+                        echo $zipReader->decompressDataFromFileInfo($fileInfo);
+                    },
+                    200,
+                    $responseHeaders
+                );
             }
         } else {
             return new Response('Unrecognized Compression Type', 500);
