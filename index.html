@@ -2,8 +2,65 @@
 <html>
     <head>
         <title>PHP-CBZ-Reader</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" />
     </head>
     <body>
-        <h1>A cbz reader for php</h1>
+        <div class="container">
+            <div class="page-header">
+                <h1>A cbz reader for php</h1>
+            </div>
+            <h2>Requirements</h2>
+            <ul>
+                <li>PHP &gt;= 5.3</li>
+                <li>Composer</li>
+            </ul>
+            <h2>Installation</h2>
+            <ul>
+                <li>Clone the repository: <code>git clone https://github.com/coverslide/php-cbz-reader</code></li>
+                <li>Get Composer (<a href="http://getcomposer.org">http://getcomposer.org</a>)</li>
+                <li>Install dependencies <code>composer install</code></li>
+                <li>Copy config.ini.example to config.ini <code>cp config/config.ini{.example,}</code></li>
+                <li>Modify <code>cbz.dir</code> entry in <code>config/config.ini</code></li>
+                <li>Point your document root to the <code>web/</code> directory</li>
+            </ul>
+            <h2>Screenshots</h2>
+            <ul id="screenshots" class="row list-unstyled">
+                <li class="col-xs-4 col-md-3">
+                    <a href="javascript:" class="thumbnail">
+                        <img src="ss01.png" height="200" width="300" />
+                    </a>
+                </li>
+                <li class="col-xs-4 col-md-3">
+                    <a href="javascript:" class="thumbnail">
+                        <img src="ss02.png" height="200" width="300" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="lightbox" class="modal" tabindex="-1">
+            <div class="modal-dialog" style="width:100%">
+                <div class="modal-content">
+                    <div class="modal-body" style="overflow:auto;">
+                        <div id="lightbox-image"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            (function () {
+                'use strict';
+
+                var $lightbox = $('#lightbox');
+                var $image = $('#lightbox-image');
+                $('#screenshots').on('click', 'img', function (evt) {
+                    $image.empty();
+                    $image.append('<img>');
+                    $image.find('img').attr('src', this.src);
+                    $lightbox.modal();
+                });
+            }());
+        </script>
     </body>
 </html>
