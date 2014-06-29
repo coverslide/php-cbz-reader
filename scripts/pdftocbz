@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+wd=$1
+if [ "$wd" = "" ] ; then
+  wd=`pwd`
+fi
+cwd=`pwd`
+
+find -L "$wd" -iname "*.pdf" | sort | while read pdf ; do
+
+  start_directory=`dirname "$pdf"`
+  filename=$(basename "$pdf")
+  extension="${filename##*.}"
+  filename="${filename%.*}"
+
+  cbzfile=${filename}.cbz
+  cbz="$start_directory/$cbzfile"
+
+  tempdir=`mktemp -d`
+
+  echo ":: $pdf ::"
+  echo ":: $cbzfile ::"
+  echo ":: $cbz ::"
+  echo ":: $tempdir ::"
+  
+  pdfimages -j "$pdf" "$tempdir/$filename"
+  pdfok=$?
+  if [ $pdfok != 0 ] ; then
+    echo "#### #### #### RAR NOT OK : $pdf #### #### ####"
+  fi
+  cd $tempdir
+  rm "$cbz"
+  zip -q -v -r "$cbz" -- *
+  zipok=$?
+  if [ $zipok = 0 ] ; then
+    if [ $zipok = 0  ] ; then
+      : #rm -v "$pdf"
+    fi
+    echo "# FINISHED: $pdf"
+    rm "$pdf"
+  else
+    echo "#### #### #### ZIP NOT OK : $cbz #### #### ####"
+  fi
+  cd $cwd
+  rm -rf "$tempdir"
+
+  continue
+done

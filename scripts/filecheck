@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+## A script to verify all files are their correct format
+cwd=`pwd`
+root=$1
+echo $root
+
+
+find -L "$root" -iname "*.zip" -o -iname "*.cbz" -o -iname "*.cbr" -o -iname "*.rar" | while read f
+do
+  #echo -n "# $f:"
+  base=$(basename "$f")
+  dir=$(dirname "$f")
+  ext="${base##*.}"
+  file="${base%.*}"
+
+  case $ext in
+    zip|ZIP|cbz|CBZ)
+      mn=$(head -c 2 "$f")
+      if [ "$mn" = "PK" ] ; then
+        : # echo "OK"
+      elif [  "$mn" = "Ra" ] ; then
+        #echo "IS RAR!"
+        mv -v "$f" "$dir/${file}.cbr"
+      else
+        echo "### Unknown MN: $mn"
+      fi
+      ;;
+    rar|RAR|cbr|CBR)
+      mn=$(head -c 2 "$f")
+      if [ "$mn" = "PK" ] ; then
+        #echo "IS ZIP!"
+        mv -v "$f" "$dir/${file}.cbz"
+      elif [  "$mn" = "Ra" ] ; then
+        : # echo "OK"
+      else
+        echo "### Unknown MN: $mn"
+      fi
+      ;;
+    *)
+      echo "## Unknown: $ext ";;
+  esac
+done

@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+wd=$1
+if [ "$wd" = "" ] ; then
+  wd=`pwd`
+fi
+cwd=`pwd`
+
+#convert .zip to .cbz
+find -L "$wd" -name "*.zip" | sort | while read zip ; do
+  start_directory=`dirname "$zip"`
+  cbzfile=`basename "$zip" .zip`.cbz
+  cbz="$start_directory/$cbzfile"
+
+  mv -v "$zip" "$cbz"
+done
+
+#and convert rar to cbr
+find -L "$wd" -name "*.rar" | sort | while read rar ; do
+  start_directory=`dirname "$rar"`
+  cbrfile=`basename "$rar" .rar`.cbr
+  cbr="$start_directory/$cbrfile"
+
+  mv -v "$rar" "$cbr"
+done
+
+find  -L "$wd" -iname "*.cbr" | sort | while read rar ; do
+  start_directory=`dirname "$rar"`
+  ext=`grep -o '\.[^.]\+$'<<<"$rar"`
+  if [ "$ext" != ".cbr" ] ; then
+    cbrfile=`basename "$rar" "$ext"`.cbr
+    cbr="$start_directory/$cbrfile"
+
+    mv -v "$rar" "$cbr"
+  fi
+done
+
+#make sure solid rars are converted, most readers have problems with solid rars
+find -L "$wd" -name "*.cbr" | sort | while read cbr ; do
+  start_directory=`dirname "$cbr"`
+  cbzfile=`basename "$cbr" .cbr`.cbz
+  cbz="$start_directory/$cbzfile"
+
+  rarinfo=`7z l "$cbr"`
+  solidrar=`echo $rarinfo | grep "Characteristics = Solid"`
+  iszip=`echo $rarinfo | grep "Type = zip"`
+
+
+  echo ":: $cbr ::"
+
+  if [ -n "$solidrar" ] ; then
+    echo $cbr SOLID!
+  fi
+
+  if [ -n "$iszip" ] ; then
+    echo $cbr IS ZIP!
+    mv "$cbr" "$cbz"
+    continue
+  fi
+
+  if [ -f "$cbz" ] ; then
+    echo $cbzfile EXISTS!
+    temp1=`mktemp -d`
+    temp2=`mktemp -d`
+    
+    7z x "$cbz" -o$temp1 >& /dev/null
+    7z x "$cbr" -o$temp2 >& /dev/null
+    
+    diff=`diff -r $temp1 $temp2`
+    isdiff=$?
+
+    if [ "$isdiff" = "0" ] ; then
+      echo SAME $cbr
+      rm -v "$cbr"
+      rm -rf $temp1 $temp2
+      continue
+    else
+      echo DIFFER $cbz
+      cbzsed=$(echo "$temp1"| sed -e 's/\//\\\//g')
+      cbrsed=$(echo "$temp2"| sed -e 's/\//\\\//g')
+      echo "$diff" | sed -e "s/$cbzsed/cbz/" -e "s/$cbrsed/cbr/"
+      rm -rf $temp1 $temp2
+      continue
+    fi
+  fi
+  tempdir=`mktemp -d`
+  unrar x -idq -rv "$cbr" "$tempdir"
+  rarok=$?
+  if [ $rarok != 0 ] ; then
+    echo "#### #### #### RAR NOT OK : $cbr #### #### ####"
+  fi
+  cd $tempdir
+  zip -q -v -r "$cbz" -- *
+  zipok=$?
+  if [ $zipok = 0 ] ; then
+    if [ $zipok = 0  ] ; then
+      rm -v "$cbr"
+    fi
+    echo "# FINISHED: $cbr"
+  else
+    echo "#### #### #### ZIP NOT OK : $cbz #### #### ####"
+  fi
+  cd $cwd
+  rm -rf "$tempdir"
+done
