@@ -62,8 +62,6 @@ a,a:link,a:active,a:visited{color: #000;text-decoration:none; cursor:pointer}
 #cbz-reader-viewer .image {
     display:block;
     width:100%;
-    -webkit-transition:width .5s;
-    -moz-transition:width .5s;
 }
 #cbz-reader-viewer .image.zoom {width:200%}
 #cbz-reader-viewer .viewer-text {background:white}

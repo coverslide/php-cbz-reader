@@ -3,6 +3,9 @@
 
     // how much to divide deltaX by
     var ZOOM_DIVIDEND = 100;
+    var MIN_ZOOM_AMT = 2.5;
+    var MIN_ZOOM = 100;
+    var MAX_ZOOM = 200;
 
     Coverslide('widget')('cbzreader').ViewerWidget = klass(EventEmitter2).extend({
         initialize: function (selector)
@@ -30,15 +33,38 @@
             });
 
             this.$image.on('mousewheel', function (evt) {
-                if (evt.shiftKey) {
+                var e = evt.originalEvent;
+                var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+                if (e.shiftKey) {
+                    e.preventDefault();
+                    self.zoom(delta);
+                }
+            });
+
+            this.bindPinchEvents();
+        },
+        bindPinchEvents: function () {
+            var self = this;;
+            var pinchData = {
+                currentZoom: 100
+            };
+
+            this.$image.on('touchstart', function (evt) {
+                var touches = evt.originalEvent.touches;
+                if(touches.length >= 2){
+                    pinchData.startDistance = Coverslide.util.distance(touches[0], touches[1]);
+                    pinchData.startZoom = pinchData.currentZoom;
+                }
+            });
+
+            this.$image.on('touchmove', function (evt) {
+                var touches = evt.originalEvent.touches;
+                if(touches.length >= 2){
                     evt.preventDefault();
-                    /*
-                    console.log(
-                        evt.originalEvent.deltaX, evt.originalEvent.deltaY, self.$root.scrollTop(), self.$root.scrollLeft(),
-                        evt.pageX, evt.pageY, this.offsetTop, this.offsetLeft,
-                        this.style.width)
-                    */
-                    self.zoom(evt.originalEvent.deltaX);
+                    var dist = Coverslide.util.distance(touches[0],touches[1]);
+                    var newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchData.startZoom * (dist / pinchData.startDistance)));
+                    pinchData.currentZoom = newZoom;
+                    self.$image[0].style.width = newZoom + "%";
                 }
             });
         },
@@ -47,9 +73,10 @@
             var element = this.$image[0];
             var width = element.style.width;
             var percentage = Number(width.replace(/%$/,''));
-            if ((delta > 0 && percentage < 200) || (delta < 0 && percentage > 100)) {
+            if ((delta > 0 && percentage < MAX_ZOOM) || (delta < 0 && percentage > MIN_ZOOM)) {
                 var zoomAmt = delta / ZOOM_DIVIDEND;
-                percentage += zoomAmt;
+                var normZoomAmt = Math.max(MIN_ZOOM_AMT, Math.abs(zoomAmt));
+                percentage += zoomAmt < 0 ? -normZoomAmt : normZoomAmt;
                 element.style.width = percentage + '%';
             }
         },
