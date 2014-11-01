@@ -2,3 +2,5 @@
 /vendor
 /config/config.ini
 
+/web/assets
+/node_modules
