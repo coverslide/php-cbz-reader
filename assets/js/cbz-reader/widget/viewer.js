@@ -36,7 +36,7 @@ module.exports = klass(EventEmitter).extend({
             }
         });
 
-        this.$image.on('mousewheel', function (evt) {
+        this.$image.on('mousewheel DOMMouseScroll MozMousePixelScroll', function (evt) {
             var e = evt.originalEvent;
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
             if (e.shiftKey) {

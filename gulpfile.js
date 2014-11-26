@@ -35,19 +35,31 @@ gulp.task('css', ['copy'], function () {
         .pipe(gulp.dest('./web/assets/css'));
 });
 
-gulp.task('copy', function () {
+/*
+gulp.task('icomoon', function () {
     return gulp.src('./assets/icomoon/**')
         .pipe(gulp.dest('./web/assets/icomoon'));
+});
+*/
+
+gulp.task('foundation-icons', function () {
+    return gulp.src('./assets/foundation-icons/**')
+        .pipe(gulp.dest('./web/assets/foundation-icons'));
 });
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch('./assets/js/**/*.js', ['js'])
-    gulp.watch('./assets/css/**/*.scss', ['css'])
-    gulp.watch('./assets/icomoon/**', ['icomoon'])
-    gulp.watch('./web/assets/**').on('change', livereload.changed)
+    gulp.watch('./assets/js/**/*.js', ['js']);
+    gulp.watch('./assets/css/**/*.scss', ['css']);
+    /*
+    gulp.watch('./assets/icomoon/**', ['icomoon']);
+    */
+    gulp.watch('./assets/foundation-icons/**', ['foundation-icons']);
+    gulp.watch('./web/assets/**').on('change', livereload.changed);
 });
 
-gulp.task('build', ['copy', 'css', 'js'])
+gulp.task('copy', [/*'icomoon', */'foundation-icons']);
+
+gulp.task('build', ['copy', 'css', 'js']);
 
 gulp.task('default', ['watch', 'build']);

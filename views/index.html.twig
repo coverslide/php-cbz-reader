@@ -15,15 +15,15 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
     <div id="cbz-reader-toolbar" class="navbar navbar-default" role="navigation">
         <div class="">
             <div class="toolbar-left navbar-left">
-                <a class="btn btn-md btn-primary" data-action="toggle-browser">Files</a>
-                <a class="btn btn-md btn-primary" data-action="toggle-pages">Pages</a>
+                <a class="button round" data-action="toggle-browser">Files</a>
+                <a class="button round" data-action="toggle-pages">Pages</a>
             </div>
             <div class="toolbar-right navbar-right">
-                <a class="btn btn-md btn-default hidden" data-action="fullscreen">Full</a>
+                <a class="button round" data-action="fullscreen">Full</a>
             </div>
             <div class="toolbar-center">
-                <a class="btn btn-md btn-primary fa fa-arrow-left" data-action="previous-page" disabled></a>
-                <a class="btn btn-md btn-primary fa fa-arrow-right" data-action="next-page" disabled></a>
+                <a class="button round fi-arrow-left" data-action="previous-page" disabled></a>
+                <a class="button round fi-arrow-right" data-action="next-page" disabled></a>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 {%- verbatim -%}
 <li class="browser-item" data-path="{{= it.path }}">
     <a href="#!{{= it.path }}{{= it.directory ? '' : '::1' }}">
-        <span class="browser-icon fa fa-{{= it.directory ? 'folder folder' : 'file file' }}"></span>
+        <span class="browser-icon {{= it.directory ? 'fi-folder' : 'fi-page' }}"></span>
         <span class="file-name">{{= it.filename }}</span>
     </a>
     {{? it.directory }}
