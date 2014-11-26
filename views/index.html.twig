@@ -1,11 +1,13 @@
 {% extends "layout.html.twig" %}
 
 {% block head %}
+{#
 <script type="text/javascript">
 Coverslide('urls')('cbzreader').fileListUrl = '/file-list';
 Coverslide('urls')('cbzreader').comicPagesUrl = '/comic/list';
 Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 </script>
+#}
 {% endblock %}
 
 {% block content %}
@@ -60,6 +62,7 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 {% endblock %}
 
 {% block bottom %}
+{#
 <script src="/vendor/klass.js"></script>
 <script src="/vendor/doT.js"></script>
 <script src="/vendor/eventemitter2.js"></script>
@@ -75,4 +78,6 @@ Coverslide('urls')('cbzreader').comicImageUrl = '/comic/image';
 <script type="text/javascript">
     Coverslide.page.current = new Coverslide.page.cbzreader.CbzReaderPage();
 </script>
+#}
+<script src="/assets/js/main.js"></script>
 {% endblock %}

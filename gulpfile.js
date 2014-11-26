@@ -20,7 +20,7 @@ gulp.task('js', function() {
     })
 
         .bundle()
-        .pipe(source('script.js'))
+        .pipe(source('main.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(uglify())
@@ -28,20 +28,26 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./web/assets/js/'));
 });
 
-gulp.task('css', function () {
+gulp.task('css', ['copy'], function () {
     return gulp.src('./assets/css/main.scss')
         .pipe(sass())
         .pipe(cssmin())
         .pipe(gulp.dest('./web/assets/css'));
 });
 
+gulp.task('copy', function () {
+    return gulp.src('./assets/icomoon/**')
+        .pipe(gulp.dest('./web/assets/icomoon'));
+});
+
 gulp.task('watch', function () {
     livereload.listen();
     gulp.watch('./assets/js/**/*.js', ['js'])
     gulp.watch('./assets/css/**/*.scss', ['css'])
+    gulp.watch('./assets/icomoon/**', ['icomoon'])
     gulp.watch('./web/assets/**').on('change', livereload.changed)
 });
 
-gulp.task('build', ['css', 'js'])
+gulp.task('build', ['copy', 'css', 'js'])
 
 gulp.task('default', ['watch', 'build']);

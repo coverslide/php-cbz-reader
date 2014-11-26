@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "browserify": "^6.2.0",
+    "dot": "^1.0.2",
     "gulp": "^3.8.9",
     "gulp-css-whitespace": "^0.1.2",
     "gulp-cssmin": "^0.1.6",
@@ -10,6 +11,8 @@
     "gulp-sass": "^1.2.2",
     "gulp-sourcemaps": "^1.2.7",
     "gulp-uglify": "^1.0.1",
+    "jquery": "^2.1.1",
+    "klass": "^1.4.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
   }
