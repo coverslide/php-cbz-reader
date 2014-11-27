@@ -89,7 +89,7 @@ class CbzApplication extends Application
 
     protected function defineRoutes()
     {
-        $this->get('/', "Coverslide.RootController:indexAction");
+        //$this->get('/', "Coverslide.RootController:indexAction");
         $this->get('/file-list', "Coverslide.FileListController:filesAction");
         $this->get('/comic/list', "Coverslide.ComicController:listAction");
         $this->get('/comic/image', "Coverslide.ComicController:imageAction");

@@ -1,7 +1,6 @@
 'use strict';
 
 var gulp = require('gulp');
-var debug = require('gulp-debug')
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
