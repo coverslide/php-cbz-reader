@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var klass = require('klass');
 var EventEmitter = require('events').EventEmitter;
+var fullscreen = require('fullscreen')
 var ToolbarWidget = require('../widget/toolbar.js');
 var BrowserWidget = require('../widget/browser.js');
 var PagesWidget = require('../widget/pages.js');
@@ -15,6 +16,8 @@ var MODE_BROWSER = 1;
 var MODE_PAGES   = 2;
 
 module.exports = klass(EventEmitter).extend({
+    fullscreen: false,
+    fullscreenEl: false,
     initialize: function ()
     {
         this.mode = MODE_NONE;
@@ -24,6 +27,7 @@ module.exports = klass(EventEmitter).extend({
         this.browser = new BrowserWidget('#cbz-reader-browser');
         this.pages   = new PagesWidget('#cbz-reader-pages');
         this.viewer  = new ViewerWidget('#cbz-reader-viewer');
+        this.fullscreenEl = fullscreen(document.body);
         this.attachDao();
         this.bindEvents();
         this.start();
@@ -76,11 +80,20 @@ module.exports = klass(EventEmitter).extend({
     },
     toggleFullscreen: function ()
     {
+        if (this.fullscreen) {
+            this.fullscreen = false;
+            this.fullscreenEl.release();
+        } else {
+            this.fullscreen = true;
+            this.fullscreenEl.request();
+        }
+        /*
         if (document.fullscreenEnabled) {
             document.exitFullscreen();
         } else {
             document.body.requestFullscreen();
         }
+        */
     },
     onHashChange: function ()
     {

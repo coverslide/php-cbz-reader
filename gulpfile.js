@@ -12,6 +12,8 @@ var sass = require('gulp-sass');
 var cssmin = require('gulp-cssmin');
 var livereload = require('gulp-livereload');
 
+
+
 gulp.task('js', function() {
     return browserify({
         entries: ['./assets/js/main.js'],
@@ -29,7 +31,10 @@ gulp.task('js', function() {
 
 gulp.task('css', ['copy'], function () {
     return gulp.src('./assets/css/main.scss')
-        .pipe(sass())
+        .pipe(sass({
+            errLogToConsole: true,
+            sourceComments : 'normal'
+        }))
         .pipe(cssmin())
         .pipe(gulp.dest('./web/assets/css'));
 });

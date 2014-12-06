@@ -1,6 +1,7 @@
 'use strict';
 
-var klass = require('klass')
+var $ = require('jquery');
+var klass = require('klass');
 
 module.exports = klass({
     initialize: function ()

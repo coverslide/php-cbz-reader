@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var EventEmitter = require('events').EventEmitter;
 var klass = require('klass');
 
